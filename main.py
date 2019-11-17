@@ -6,7 +6,7 @@ import json
 import queue
 
 from lib.bt_scan import bt_scan
-
+from lib.devices import devices
 print("bt_monitor initializing")
 
 # Update the mqtt state topic
@@ -83,6 +83,10 @@ client.loop_start()
 # MaxQueueSize = int(CONFIG['general']['MaxQueueSize'])
 RequestQueue = queue.Queue(maxsize=30)
 
+### Set up dictionary of devices to scan
+device_dict = devices()
+
+
 
 ### SETUP END ###
 
@@ -103,14 +107,18 @@ if __name__ == "__main__":
     while True:
         while not RequestQueue.empty():
             message = RequestQueue.get()
+            device_dict.update(message)
             msg_json = json.loads(str(message.payload.decode("utf-8")))
+
             # need to verify message.topic
-            print("cmd = " + msg_json["cmd"])
-            print("DeviceName = " + msg_json["DeviceName"])
-            print("Address = " + msg_json["Address"])
+#            print("cmd = " + msg_json["cmd"])
+#            print("DeviceName = " + msg_json["DeviceName"])
+#            print("Address = " + msg_json["Address"])
 
             # Create bt_scan object and request a scan
-            scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
+#           scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
+            address = msg_json["Address"]
+            scanner = device_dict.bt_scans[address]
             scanner.scan()
             if not scanner.ErrorOnScan:
                 client.publish(status_topic, scanner.results)
