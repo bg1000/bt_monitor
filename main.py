@@ -35,9 +35,10 @@ def on_message(client, userdata, message):
     print("Address = " + msg_json["Address"])
 
     # Create bt_scan object and request a scan
-    scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"])
+    scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
     scanner.scan()
-
+    if not scanner.ErrorOnScan:
+        client.publish(status_topic, scanner.results)
 
 # The callback for log messages
 def on_log(client, userdata, level, buf):
