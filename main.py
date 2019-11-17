@@ -3,6 +3,7 @@ import os
 import yaml
 import paho.mqtt.client as mqtt
 import json
+import queue
 
 from lib.bt_scan import bt_scan
 
@@ -22,23 +23,17 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when messages come in
 def on_message(client, userdata, message):
-    print("message received " ,str(message.payload.decode("utf-8")))
- #   print("message received " ,str(message.payload))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
+ #   print("message received " ,str(message.payload.decode("utf-8")))
+ #  print("message received " ,str(message.payload))
+ #   print("message topic=",message.topic)
+ #   print("message qos=",message.qos)
+ #   print("message retain flag=",message.retain)
     client.publish(status_topic, "message received")
-    msg_json = json.loads(str(message.payload.decode("utf-8")))
-    # check message.topic
-    print("cmd = " + msg_json["cmd"])
-    print("DeviceName = " + msg_json["DeviceName"])
-    print("Address = " + msg_json["Address"])
+    if not RequestQueue.full():
+        RequestQueue.put(message)
+    else:
+        print("The request queue full.  Scan request discarded")
 
-    # Create bt_scan object and request a scan
-    scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
-    scanner.scan()
-    if not scanner.ErrorOnScan:
-        client.publish(status_topic, scanner.results)
 
 # The callback for log messages
 def on_log(client, userdata, level, buf):
@@ -62,11 +57,9 @@ group_command_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['comma
 node_command_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['publisher_id'] + "/" + CONFIG['mqtt']['command_topic']
 status_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['publisher_id'] + "/" + CONFIG['mqtt']['status_topic']
 
-print ("group_command_topic = " + group_command_topic)  
-print ("node_command_topic = " + node_command_topic)
-print ("status_topic = " + status_topic)
-
-
+#print ("group_command_topic = " + group_command_topic)  
+#print ("node_command_topic = " + node_command_topic)
+#print ("status_topic = " + status_topic)
 
 if 'discovery_prefix' not in CONFIG['mqtt']:
     discovery_prefix = 'homeassistant'
@@ -86,12 +79,16 @@ client.connect(host, port, 60)
 ymlfile.close()
 client.loop_start()
 
+### setup request queue ###
+# MaxQueueSize = int(CONFIG['general']['MaxQueueSize'])
+RequestQueue = queue.Queue(maxsize=30)
+
 
 ### SETUP END ###
 
 ### MAIN LOOP ###
 if __name__ == "__main__":
-    # Create device objects and create callback functions
+
 
 #
 # decide if you want to do something here
@@ -104,6 +101,21 @@ if __name__ == "__main__":
     # Main loop
     num_loops = 0
     while True:
+        while not RequestQueue.empty():
+            message = RequestQueue.get()
+            msg_json = json.loads(str(message.payload.decode("utf-8")))
+            # need to verify message.topic
+            print("cmd = " + msg_json["cmd"])
+            print("DeviceName = " + msg_json["DeviceName"])
+            print("Address = " + msg_json["Address"])
+
+            # Create bt_scan object and request a scan
+            scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
+            scanner.scan()
+            if not scanner.ErrorOnScan:
+                client.publish(status_topic, scanner.results)
+ 
+ 
         num_loops += 1
         print("Loop number " + str(num_loops))
         time.sleep(5)
