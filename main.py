@@ -2,8 +2,9 @@ import time
 import os
 import yaml
 import paho.mqtt.client as mqtt
+import json
 
-# from lib.garage import GarageDoor
+from lib.bt_scan import bt_scan
 
 print("bt_monitor initializing")
 
@@ -22,10 +23,22 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when messages come in
 def on_message(client, userdata, message):
     print("message received " ,str(message.payload.decode("utf-8")))
+ #   print("message received " ,str(message.payload))
     print("message topic=",message.topic)
     print("message qos=",message.qos)
     print("message retain flag=",message.retain)
     client.publish(status_topic, "message received")
+    msg_json = json.loads(str(message.payload.decode("utf-8")))
+    # check message.topic
+    print("cmd = " + msg_json["cmd"])
+    print("DeviceName = " + msg_json["DeviceName"])
+    print("Address = " + msg_json["Address"])
+
+    # Create bt_scan object and request a scan
+    scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"])
+    scanner.scan()
+
+
 # The callback for log messages
 def on_log(client, userdata, level, buf):
     print("log: ",buf)
