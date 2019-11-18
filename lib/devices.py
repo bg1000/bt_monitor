@@ -18,7 +18,7 @@ class devices(object):
         if address in self.bt_scans:
             scanner = self.bt_scans[address]
             scanner.name = msg_json["DeviceName"]
-            scanner.address = msg_json["ScansForAway"]
+            scanner.ScansForAway = msg_json["ScansForAway"]
         else:
             self.bt_scans[address] = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
 

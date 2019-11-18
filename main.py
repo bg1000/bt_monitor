@@ -111,18 +111,14 @@ if __name__ == "__main__":
             msg_json = json.loads(str(message.payload.decode("utf-8")))
 
             # need to verify message.topic
-#            print("cmd = " + msg_json["cmd"])
-#            print("DeviceName = " + msg_json["DeviceName"])
-#            print("Address = " + msg_json["Address"])
 
-            # Create bt_scan object and request a scan
-#           scanner = bt_scan("hci0", msg_json["DeviceName"], msg_json["Address"], msg_json["ScansForAway"])
-            address = msg_json["Address"]
-            scanner = device_dict.bt_scans[address]
+            # execute a scan
+
+            scanner = device_dict.bt_scans[msg_json["Address"]]
             scanner.scan()
             if not scanner.ErrorOnScan:
                 client.publish(status_topic, scanner.results)
- 
+                # Check confidence here. If != 0.0 or 100.0 then enqueue another scan
  
         num_loops += 1
         print("Loop number " + str(num_loops))
