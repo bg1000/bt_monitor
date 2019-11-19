@@ -118,7 +118,14 @@ if __name__ == "__main__":
             scanner.scan()
             if not scanner.ErrorOnScan:
                 client.publish(status_topic, scanner.results)
-                # Check confidence here. If != 0.0 or 100.0 then enqueue another scan
+                # If confidence != 0.0 and != 100.0 this means that the device wasn't seen
+                # but we haven't yet checked ScansForAway times for it.
+                # Enqueue another request for this message so it checks it again
+                if scanner.PreviousConfidence != 0.0 and scanner.PreviousConfidence != 100.0:
+                   if not RequestQueue.full(): 
+                       RequestQueue.put(message)
+                   else:
+                       print("The request queue is full. Discarding request.")
  
         num_loops += 1
         print("Loop number " + str(num_loops))
