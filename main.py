@@ -24,22 +24,21 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when messages come in
 def on_message(client, userdata, message):
-    logging.debug("message received " ,str(message.payload.decode("utf-8")))
-    logging.debug("message received " ,str(message.payload))
-    logging.debug("message topic=",message.topic)
-    logging.debug("message qos=",message.qos)
-    logging.debug("message retain flag=",message.retain)
+    logging.debug("message received " + str(message.payload.decode("utf-8")))
+    logging.debug("message topic = " + str(message.topic))
+    logging.debug("message qos = " + str(message.qos))
+    logging.debug("message retain flag = " + str(message.retain))
     if not RequestQueue.full():
         RequestQueue.put(message)
     else:
-        logging.warning("The request queue full.  Scan request discarded")
+        logging.warning("The request queue full.  Message discarded.")
 
 
 # The callback for log messages
 def on_log(client, userdata, level, buf):
     pass
-  # The following line causes errors  
-  #  logging.debug("MQTT-log: ",str(buf))
+
+    logging.debug("MQTT-log: " + str(buf))
 
 # The callback for subscription confirmations
 def on_subscribe(client, userdata, mid, granted_qos):
