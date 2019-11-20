@@ -10,12 +10,6 @@ from lib.bt_scan import bt_scan
 from lib.devices import devices
 print("bt_monitor initializing")
 
-# Update the mqtt state topic
-def update_state(value, topic):
-    logging.info("State change triggered: %s -> %s" % topic, value)
-
-    client.publish(topic, value, retain=True)
-
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     logging.info ("Connected to MQTT broker with result code: %s" % mqtt.connack_string(rc))
@@ -60,6 +54,7 @@ discovery = bool(CONFIG['mqtt'].get('discovery'))
 group_command_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['command_topic']
 node_command_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['publisher_id'] + "/" + CONFIG['mqtt']['command_topic']
 status_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['publisher_id'] + "/" + CONFIG['mqtt']['status_topic']
+this_node_topic = CONFIG['mqtt']['base_topic'] + "/" + CONFIG['mqtt']['publisher_id'] + "/" 
 
 logging.debug("group_command_topic = " + group_command_topic)  
 logging.debug("node_command_topic = " + node_command_topic)
@@ -78,6 +73,7 @@ client.on_log = on_log
 client.on_subscribe = on_subscribe
 
 client.username_pw_set(user, password=password)
+logging.debug("Getting ready to connect to MQTT server.")
 client.connect(host, port, 60)
 
 client.loop_start()
@@ -111,7 +107,9 @@ if __name__ == "__main__":
                 scanner = device_dict.bt_scans[msg_json["Address"]]
                 scanner.scan()
                 if not scanner.ErrorOnScan:
-                    client.publish(status_topic, scanner.results)
+                    device_topic = this_node_topic + msg_json["DeviceName"]
+                    logging.debug("The device topic is: " + device_topic)
+                    client.publish(device_topic, scanner.results)
                     # If confidence != 0.0 and != 100.0 this means that the device wasn't seen
                     # but we haven't yet checked ScansForAway times for it.
                     # Enqueue another request for this message so it checks it again
