@@ -89,6 +89,8 @@ RequestQueue = queue.Queue(maxsize = int(CONFIG['general']['MaxQueueSize']))
 device_dict = devices()
 
 LoopTime = int(CONFIG['general']['LoopTimer'])
+
+### close config file
 ymlfile.close()
 
 ### SETUP END ###
