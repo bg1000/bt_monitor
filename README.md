@@ -1,6 +1,6 @@
 ## What is bt_monitor
 
-bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as the Raspberry Pi setup instructions and a similar setup for the mqtt topics and home assistant entities. The overall structure of this program was adapted from [GarageQTPi](https://github.com/Jerrkawz/GarageQTPi)
+bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as the Raspberry Pi setup instructions and a similar setup for the mqtt topics and home assistant entities. The overall structure and method of deployment of this program was adapted from [GarageQTPi](https://github.com/Jerrkawz/GarageQTPi)
 
 ## Hardware
 
