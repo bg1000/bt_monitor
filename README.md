@@ -1,12 +1,8 @@
-## What is GarageQTPi
+## What is bt_monitor
 
-GarageQTPi is an implementation that provides methods to communicate with a Raspberry Pi garage door opener via the MQTT protocol.
-Although it is designed to work out of the box with a Home Assistant cover component it can also be used as the basis for any Raspberry Pi garage project.
+bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by Andrew Freyer's montor script and makes use of the confidence concept introduced there. 
 
-## Motivation
 
-Home Assistant has integration for raspberry pi garage door openers but only if the instance of Home Assistant is running on the raspberry pi. If your raspberry pi is soley a garage door opener like mine
-then you need to use an MQTT cover component to interface with the pi.
 
 ## Hardware
 
