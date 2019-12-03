@@ -1,26 +1,15 @@
 ## What is bt_monitor
 
-bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by Andrew Freyer's montor script and makes use of the confidence concept introduced there. 
-
-
+bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there. 
 
 ## Hardware
 
-1. Raspberry pi 3
-   * [Canakit with everything ~$75](https://www.amazon.com/CanaKit-Raspberry-Complete-Starter-Kit/dp/B01C6Q2GSY)
-   * [Canakit with PS/case ~$50](https://www.amazon.com/CanaKit-Raspberry-Clear-Power-Supply/dp/B01C6EQNNK)
-2. Relay
-   * [Sainsmart 2-channel](https://www.amazon.com/gp/product/B0057OC6D8)
-3. Magnetic switches
-   * [Magnetic Switches](https://www.amazon.com/gp/product/B0009SUF08)
-4. Additional wires/wire nuts. 
-    * 14 gauge solid copper wire for garage motor wiring
-    * 20-22 gauge copper wire for magnetic switch wiring
-    * jumper wiries for GPIO pins
-5. Mounting Hardware. 
-    * See installation section for mounting ideas.
+This application is intended to run on a dedicated pi-zero W (or a raspberry pi).
 
-Total cost: ~75-$100. Cheaper if you already have some raspberry pi parts
+## Setup
+
+
+
 
 ## Wiring/Installation
 
