@@ -1,12 +1,65 @@
 ## What is bt_monitor
 
-bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there. 
+bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as the Raspberry Pi setup instructions. 
 
 ## Hardware
 
 This application is intended to run on a dedicated pi-zero W (or a raspberry pi).
 
-## Setup
+## Installation Instructions for Raspberry Pi Zero W
+Setup of SD Card
+Download latest version of raspbian here
+
+Download etcher from etcher.io
+
+Image raspbian buster to SD card. Instructions here.
+
+Mount boot partition of imaged SD card (unplug it and plug it back in)
+
+To enable ssh, create blank file, without any extension, in the root directory called ssh
+
+To setup Wi-Fi, create wpa_supplicant.conf file in root directory and add Wi-Fi details for home Wi-Fi:
+
+country=US
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    update_config=1
+
+network={
+    ssid="Your Network Name"
+    psk="Your Network Password"
+    key_mgmt=WPA-PSK
+}
+On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
+Configuration and Setup
+SSH into the Raspberry Pi (default password: raspberry):
+ssh pi@theipaddress
+Change the default password:
+sudo passwd pi
+Update and upgrade:
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y
+sudo reboot
+Install Bluetooth Firmware, if necessary:
+#install Bluetooth drivers for Pi Zero W
+sudo apt-get install pi-bluetooth
+Reboot:
+sudo reboot
+Install Mosquitto 1.5+ (important step!):
+# get repo key
+wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+
+#add repo
+sudo apt-key add mosquitto-repo.gpg.key
+
+#download appropriate lists file 
+cd /etc/apt/sources.list.d/
+sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+
+#update caches and install 
+apt-cache search mosquitto
+sudo apt-get update
+sudo apt-get install -f libmosquitto-dev mosquitto mosquitto-clients libmosquitto1
 
 
 
