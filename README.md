@@ -20,7 +20,7 @@ This application is intended to run on a dedicated pi-zero W (or a raspberry pi)
 
 6. To setup Wi-Fi, create wpa_supplicant.conf file in root directory and add Wi-Fi details for home Wi-Fi:
 
-`country=US
+`<country=US
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
     update_config=1
 
@@ -28,7 +28,7 @@ network={
     ssid="Your Network Name"
     psk="Your Network Password"
     key_mgmt=WPA-PSK
-}`
+}>`
 On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
 Configuration and Setup
 SSH into the Raspberry Pi (default password: raspberry):
