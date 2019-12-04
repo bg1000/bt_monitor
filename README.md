@@ -12,7 +12,7 @@ This application is intended to run on a pi-zero W (or a raspberry pi). Dedicati
 
 2. Download etcher from [etcher.io](https://www.balena.io/etcher/)
 
-3. Image raspbian buster to SD card. Instructions [here] (https://magpi.raspberrypi.org/articles/pi-sd-etcher).
+3. Image raspbian buster to SD card. Instructions [here](https://magpi.raspberrypi.org/articles/pi-sd-etcher).
 
 4. Mount boot partition of imaged SD card (unplug it and plug it back in)
 
