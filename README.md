@@ -20,7 +20,8 @@ This application is intended to run on a dedicated pi-zero W (or a raspberry pi)
 
 6. To setup Wi-Fi, create wpa_supplicant.conf file in root directory and add Wi-Fi details for home Wi-Fi:
 
-```country=US
+```
+country=US
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
     update_config=1
 
@@ -40,56 +41,10 @@ network={
 ```git clone https://github.com/bg1000/bt_monitor.git```
 4. Change to the monitor directory and run the update and install script
 ```cd bt_monitor
-sudo bash deploy bt_monitor
+sudo bash deploy bt_monitor.sh
 ```
 
 
 
 
-
-### bt_monitor setup
-1. `git clone https://github.com/Jerrkawz/GarageQTPi.git`
-2. `pip install -r requirements.txt`
-3. edit the configuration.yaml to set up mqtt (See below)
-4. `python main.py` 
-5. To start the server on boot run `sudo bash autostart_systemd.sh`
-
-
-## API Reference
-
-The server works with the Home Assisant MQTT Cover component out of the box but if you want to write your own MQTT client you need to adhere to the following API:
-
-Publish one of the following UPPER CASE strings to the command_topic in your config:
-
-`OPEN | CLOSE | STOP`
-
-Subscribe to the state_topic in your config and you will recieve one of these lower case strings when the state pin changes:
-
-`open | closed`
-
-Thats it!
-
-## Sample Configuration
-
-config.yaml:
-```
-mqtt:
-    host: m10.cloudmqtt.com
-    port: *
-    user: *
-    password: *
-doors:
-    -
-        id: 'left'
-        relay: 23
-        state: 17
-        state_topic: "home-assistant/cover/left"
-        command_topic: "home-assistant/cover/left/set"
-    -
-        id: 'right'
-        relay: 24
-        state: 27
-        state_topic: "home-assistant/cover/right"
-        command_topic: "home-assistant/cover/right/set"
-```
 
