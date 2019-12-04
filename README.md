@@ -52,8 +52,8 @@ The install script performs the following tasks:
 - sets up bt_monitor to run as a service and to start automatically when the system is booted
 5. Once the install script is complete reboot with ```$sudo reboot```
 ## Testing and Troubleshooting
-1.After startup you can verify that bt_monitor is running with ```$sudo systemctl status bt_monitor@pi```
-2 To verify that the pi can see your phone via bluetooth and that you have the name and address correct place your phone near the pi with bluetooth turned on.  Run ```$hcitool -i hci0 My_Phone XX:XX:XX:XX:XX:XX``` with the name and address of your phone.  You should see either ...
+1. After startup you can verify that bt_monitor is running with ```$sudo systemctl status bt_monitor@pi```
+2. To verify that the pi can see your phone via bluetooth and that you have the name and address correct place your phone near the pi with bluetooth turned on.  Run ```$hcitool -i hci0 My_Phone XX:XX:XX:XX:XX:XX``` with the name and address of your phone.  You should see either ...
 3. bt_monitor uses the standard python logging utility.  The default setting is WARNING which will only print messages when something goes wrong.  You can change this setting by editing the config file ```$nano /home/pi/bt_monitor/config.yaml```.  Changing WARNING to INFO will show more messages and changing it to DEBUG will show the most.
 4. To activate changes to the config file there are two options: 
 - option 1: Restart the service with ```$sudo systemctl restart bt_monitor@pi```.  The messages will show up in /var/log/syslog
