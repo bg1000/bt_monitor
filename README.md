@@ -77,7 +77,7 @@ Message 2 received on bt_monitor/garage/Bob_Phone at 1:50 PM:
     "Timestamp": "2019-12-04 13:50:32.634536"
 }
 ```
-5. Tip: It took me a bit of time to figure out where to place the pi's for best coverage and also what events I wanted to use to trigger home automations.  To make testing easier I created an input_boolean that would request a scan for a particular phone and added it to teh UI.  I then built an automation that was triggered by the input boolean, requested a scan via MQTT and reset the input_boolean.  Other automations you build can simply set this input boolean to trigger a scan. If you later decide you don't want it in the UI and you simply remove it and leave it "behind the scenes".
+5. Tip: It took me a bit of time to figure out where to place the pi's for best coverage and also what events I wanted to use to trigger scans.  To make testing easier I created an input_boolean that would request a scan for a particular phone and added it to teh UI.  I then built an automation that was triggered by the input boolean, requested a scan via MQTT and reset the input_boolean.  Other automations you build can simply set this input boolean to trigger a scan. If you later decide you don't want it in the UI and you simply remove it and leave it "behind the scenes".
 
 
 
