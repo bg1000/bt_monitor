@@ -63,21 +63,26 @@ The install script performs the following tasks:
 {
     "Adapter": "hci0",
     "cmd": "scan",
-    "DeviceName": "My_Phone",  <-- put the name of your phone here.  important: bt_monitor checks for this when it scans the address
-    "Address": "XX:XX:XX:XX:XX:XX", <-- put the mac address of your phones bluetooth adapter here
+    "DeviceName": "My_Phone",
+    "Address": "XX:XX:XX:XX:XX:XX",
     "ScansForAway": "2"
 }
 ```
+Replace **"My_Phone"** and **"XX:XX:XX:XX:XX:XX"** with the values from the hcitool test above (keep the quotes).
 After clicking *Publish* You should see your message go out and then a few seconds later a response that looks something like the following:
 ```
 Message 2 received on bt_monitor/garage/My_Phone at 1:50 PM:
 {
     "DeviceName": "My_Phone",
     "DeviceAddress": "XX:XX:XX:XX:XX:XX",
-    "Confidence": "0.0", <-- will be "100.0" if bt_monitor detects your phone
+    "Confidence": "0.0",
     "Timestamp": "2019-12-04 13:50:32.634536"
 }
 ```
+If bt_scan sees your phone confidence will be "100.0".  If bt-scan doesn't see your phone confidence will = previous_confidence - 100.0/ScansForAway.  bt_monitor will keep scanning until a value of 100.0 or 0.0 is reached.  For example: You request a scan and get a value of 100.0. You then turn off bluetooth on your phone and request another scan with ScansForAway="2".  You will get a result of "50.0" and then a result of "0.0". Once a value of either 100.0 or 0.0 is reached no further scans will be completed until another message is sent.  If you want to scan every X minutes you can accomplish this by creating an automation that sends a request every X minutes.
+
+Scan Order: bt_monitor uses a FIFO request queue (size=30 but can be changed in configuration file) and has 2 threads.  One thread responds to scan requests by putting them in the FIFO queue.  The second thread loops every 5 seconds (can be changed in configuration file) and processes any outstanding scan requests (empties the queue before going to sleep).  If the processing thread calculates a confidence greater than 0.0 and less than 100.0 it will enqueue another request for the scanned device in the request queue. If the queue is full a warning message is logged and the request is discarded.
+
 6. Tip: It took me a bit of time to figure out where to place the pi's for best coverage and also what events I wanted to use to trigger scans.  To make testing easier I created an input_boolean that would request a scan for a particular phone and added it to the UI.  I then built an automation that was triggered by the input boolean, requested a scan via MQTT and reset the input_boolean.  This allows you to easily trigger a scan for testing. Other automations you build can also set this input boolean to trigger a scan rather than having multiple automations that send the same json payload. If you later decide you don't want it in the UI you can simply remove it and leave it "behind the scenes".
 
 
