@@ -62,8 +62,8 @@ The install script performs the following tasks:
 {
     "Adapter": "hci0",
     "cmd": "scan",
-    "DeviceName": "My_Phone",  **<-- put the name of your phone here.  important: bt_monitor checks for this when it scans the address**
-    "Address": "XX:XX:XX:XX:XX:XX", **<-- put the mac address of your phones bluetooth adapter here**
+    "DeviceName": "My_Phone",  <-- put the name of your phone here.  important: bt_monitor checks for this when it scans the address
+    "Address": "XX:XX:XX:XX:XX:XX", <-- put the mac address of your phones bluetooth adapter here
     "ScansForAway": "2"
 }
 ```
@@ -73,7 +73,7 @@ Message 2 received on bt_monitor/garage/Bob_Phone at 1:50 PM:
 {
     "DeviceName": "My_Phone",
     "DeviceAddress": "XX:XX:XX:XX:XX:XX",
-    "Confidence": "0.0", **<-- will be "100.0" if bt_monitor sees your phone**
+    "Confidence": "0.0", <-- will be "100.0" if bt_monitor sees your phone
     "Timestamp": "2019-12-04 13:50:32.634536"
 }
 ```
