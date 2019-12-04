@@ -1,10 +1,10 @@
-## What is bt_monitor
+## Description
 
-bt_monitor receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as the Raspberry Pi setup instructions and a similar setup for the mqtt topics and home assistant entities. The overall structure and method of deployment of this program was adapted from [GarageQTPi](https://github.com/Jerrkawz/GarageQTPi)
+bt_monitor is a python application that receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as some of the Raspberry Pi and home assistant setup instructions. The overall structure and method of deployment of this program was adapted from [GarageQTPi](https://github.com/Jerrkawz/GarageQTPi)
 
 ## Hardware
 
-This application is intended to run on a dedicated pi-zero W (or a raspberry pi).
+This application is intended to run on a pi-zero W (or a raspberry pi). Dedicating use of the bluetooth interface to this application is recommended.
 
 ## Installation Instructions for Raspberry Pi Zero W
 ### Setup of SD Card
@@ -43,6 +43,21 @@ network={
 ```cd bt_monitor
 sudo bash deploy_bt_monitor.sh
 ```
+The install script performs the following tasks:
+- performs an update & upgrade (this may take a while on a pi-zero)
+- installs the required bluetooth tools
+- installs the mosquitto mqtt client - note: vxxx is installed due to this issue.
+- installs the required python libraries (see requirements.txt for details)
+- opens the configuration file in the nano editor.  This is a yaml file and each line may you need to change is commented.  When you are done editing the file. ''' ctrl-x, y, enter'''
+- set up bt_monitor to run as a service and to start automatically when the system is booted
+5. Once the install script is complete reboot with '''$sudo reboot'''
+## Testing and Troubleshooting
+1. After startup you can verify that bt_monitor is running with '''sudo systemctl status bt_monitor@pi'''
+2. bt_monitor usese the standard python logging utility.  The default setting is WARNING which will only print messages when something goes wrong.  You can change this setting by editing the config file '''/home/pi/bt_monitor/vinfig.yaml'''.  Chaning WARNING to INFO will show more messages and changing it to DEBUG will show the most.
+3. To activate changes to the config file there are two options: 
+- option 1: Restart the service with '''sudo systemctl restart bt_monitor@pi'''.  The messages will show up in /var/log/syslog
+- option 2: Atop the service with '''sudo systemctl stop bt_monitor@pi'''. Run the application interactively with '''$python3 /home/pi/bt_monitor/main.py'''. Message will not print to the console.  When you are done you can restart the serviec e
+
 
 
 
