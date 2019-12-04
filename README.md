@@ -56,7 +56,7 @@ The install script performs the following tasks:
 2. bt_monitor usese the standard python logging utility.  The default setting is WARNING which will only print messages when something goes wrong.  You can change this setting by editing the config file ```$nano /home/pi/bt_monitor/config.yaml```.  Changing WARNING to INFO will show more messages and changing it to DEBUG will show the most.
 3. To activate changes to the config file there are two options: 
 - option 1: Restart the service with ```$sudo systemctl restart bt_monitor@pi```.  The messages will show up in /var/log/syslog
-- option 2: Atop the service with ```$sudo systemctl stop bt_monitor@pi```. Run the application interactively with ```$python3 /home/pi/bt_monitor/main.py```. Message will now print to the console.  When you are done you can restart the serviece with ```$sudo systemctl start bt_monitor@pi```
+- option 2: Stop the service with ```$sudo systemctl stop bt_monitor@pi```. Run the application interactively with ```$python3 /home/pi/bt_monitor/main.py```. Messages will now print to the terminal.  When you are done you can ```ctrl-c``` and restart the serviece with ```$sudo systemctl start bt_monitor@pi```
 4. Since all communication to and from bt_monitor is via MQTT it is helpful to monitor the appropriate MQTT topics with an MQTT client.  If you are using home assistant the MQTT tab under Developer Tools works well.  Assumming you have kept the base topics the same in config.yaml under Listen to Topic enter  ```bt_monitor/#``` and click Start Listening. Under Publish a Packet enter ```bt_monitor/scan``` under the topic and an appropriatly formatting payload which will look something like the following:
 ```
 {
