@@ -34,13 +34,13 @@ network={
 7. On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
 ## Configuration and Setup
 1. SSH into the Raspberry Pi (default password: raspberry):
-```ssh pi@theipaddress```
+```$ssh pi@theipaddress```
 2. Change the default password:
-``` sudo passwd pi```
+```$sudo passwd pi```
 3. Download bt_monitor
-```git clone https://github.com/bg1000/bt_monitor.git```
+```$git clone https://github.com/bg1000/bt_monitor.git```
 4. Change to the monitor directory and run the update and install script
-```cd bt_monitor
+```$cd bt_monitor
 $sudo bash deploy_bt_monitor.sh
 ```
 The install script performs the following tasks:
