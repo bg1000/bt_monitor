@@ -1,177 +1,93 @@
-## What is GarageQTPi
+## Description
 
-GarageQTPi is an implementation that provides methods to communicate with a Raspberry Pi garage door opener via the MQTT protocol.
-Although it is designed to work out of the box with a Home Assistant cover component it can also be used as the basis for any Raspberry Pi garage project.
-
-## Motivation
-
-Home Assistant has integration for raspberry pi garage door openers but only if the instance of Home Assistant is running on the raspberry pi. If your raspberry pi is soley a garage door opener like mine
-then you need to use an MQTT cover component to interface with the pi.
+bt_monitor is a python application that receives scan requests for specific bluetooth devices via MQTT, completes the scans and returns the results via MQTT. This project was inspired by [Andrew Freyer's montor script](https://github.com/andrewjfreyer/monitor) and makes use of the confidence concept introduced there as well as well as some of the Raspberry Pi and home assistant setup instructions. The overall structure and method of deployment of this program was adapted from [GarageQTPi](https://github.com/Jerrkawz/GarageQTPi)
 
 ## Hardware
 
-1. Raspberry pi 3
-   * [Canakit with everything ~$75](https://www.amazon.com/CanaKit-Raspberry-Complete-Starter-Kit/dp/B01C6Q2GSY)
-   * [Canakit with PS/case ~$50](https://www.amazon.com/CanaKit-Raspberry-Clear-Power-Supply/dp/B01C6EQNNK)
-2. Relay
-   * [Sainsmart 2-channel](https://www.amazon.com/gp/product/B0057OC6D8)
-3. Magnetic switches
-   * [Magnetic Switches](https://www.amazon.com/gp/product/B0009SUF08)
-4. Additional wires/wire nuts. 
-    * 14 gauge solid copper wire for garage motor wiring
-    * 20-22 gauge copper wire for magnetic switch wiring
-    * jumper wiries for GPIO pins
-5. Mounting Hardware. 
-    * See installation section for mounting ideas.
+This application is intended to run on a pi-zero W (or a raspberry pi). Dedicating use of the bluetooth interface to this application is recommended.
 
-Total cost: ~75-$100. Cheaper if you already have some raspberry pi parts
+## Installation Instructions for Raspberry Pi Zero W
+### Setup of SD Card
+1. Download latest version of raspbian buster lite [here](https://www.raspberrypi.org/downloads/raspbian/)
 
-## Wiring/Installation
+2. Download etcher from [etcher.io](https://www.balena.io/etcher/)
 
-![alt text](WiringDiagram.png)
+3. Image raspbian buster to SD card. Instructions [here](https://magpi.raspberrypi.org/articles/pi-sd-etcher).
 
-Copyright (c) 2013 andrewshilliday
+4. Mount boot partition of imaged SD card (unplug it and plug it back in)
 
-Note: The switches I linked have 3 terminals (COM, NO, NC). You should wire up COM to GND and NO to the GPIO.
+5. To enable ssh, create blank file, without any extension, in the root directory called ssh
 
-**Important: The above diagram is outdated, pin 21 may actually be pin 27. Consult your raspberry pi's pin diagram**
+6. To setup Wi-Fi, create wpa_supplicant.conf file in root directory and add Wi-Fi details for home Wi-Fi:
 
-### Relay wiring
-**IMPORTANT: You shoud always consult with a manual before wiring**
-
-It's impossible to write a generic guide as all garage door motors are not equal. I will instead explain what I did as a reference that you can use. 
-
-The basic idea is to wire it in parallel with the button on the wall.
-The code is essentially mimicking a button press by switching the relay on and off quickly. In my case the two leftmost wires (red/white) are connected to the button on the wall.
-The two rightmost white wires are for the collision detection sensors. So I removed the two leftmost wires, wirenutted 3 solid 14 gauge wires together (the button wire, my relay wire, and then one wire to go to the garage door opener) two times for each of the two wires.
-
-<img src="http://imgur.com/GKPQFwy.png" width="500">
-
-### Magnetic switch wiring
-I ran the magnetic switch wires along the same path as the sensor wires, stapled them to the wall, and stuck the magnetic switches to the door and wall as close as I could get them. As noted above wire up the COM (common) to the GND pin and the NO (normally open) to the GPIO pin.
-
-<img src="http://imgur.com/aDgQcu4.png" height="500">
-
-Notice mine aren't exactly on the same plane but I was monitoring the gpio pins in the code to make sure they were close enough to complete the circuit before I attached them. So far the included 3M sticky tape is holding up but time will tell.
-### Mounting
-I've seen a lot of people mounting the pi/relay onto plywood and mounting that to the ceiling. I wasn't really keen on that so what I did was drill four small holes into the top of my pi and found screws and nylon spacers at lowes. I attached the
-relay to the top of the pi case. 
-
-<img src="http://imgur.com/SdHq9ft.png" height="500">
-
-
-The pi case included with the Canakit has mounting holes on the back, so I used small bolts that sit flush into the mounting holes, and then large washers and attached the case to the garage door mount. 
-The lid to the case comes off easily so once it was mounted I ran zip ties around the lid and secured it. I also squirted locktite around all the screw threads to keep the vibration of the garage door from shaking any screws loose.
-So far this has proved to be relatively stable.
-
-<img src="http://imgur.com/t29w4Qr.png" height="500">
-
-
-## Software
-
-### Prereqs 
-* Raspberry pi 3 running rasbian jessie
-* Python 2.7.x
-* pip (python 2 pip)
-
-### Installation
-1. `git clone https://github.com/Jerrkawz/GarageQTPi.git`
-2. `pip install -r requirements.txt`
-3. edit the configuration.yaml to set up mqtt (See below)
-4. `python main.py` 
-5. To start the server on boot run `sudo bash autostart_systemd.sh`
-
-## MQTT setup
-I won't try to butcher an mqtt setup guide but will instead link you to some other resources:
-
-HomeAssistant MQTT Setup: https://home-assistant.io/components/mqtt/
-
-Bruh Automation: https://www.youtube.com/watch?v=AsDHEDbyLfg
-
-## Home Assistant component setup
-Either follow the cover setup or enable mqtt discovery  
-HomeAssistant MQTT Cover: https://home-assistant.io/components/cover.mqtt/  
-HomeAssistant MQTT Discovery: https://home-assistant.io/docs/mqtt/discovery/
-
-Screenshot:
-
-![Home assistant ui][1]
-
-## API Reference
-
-The server works with the Home Assisant MQTT Cover component out of the box but if you want to write your own MQTT client you need to adhere to the following API:
-
-Publish one of the following UPPER CASE strings to the command_topic in your config:
-
-`OPEN | CLOSE | STOP`
-
-Subscribe to the state_topic in your config and you will recieve one of these lower case strings when the state pin changes:
-
-`open | closed`
-
-Thats it!
-
-## Sample Configuration
-
-config.yaml:
 ```
-mqtt:
-    host: m10.cloudmqtt.com
-    port: *
-    user: *
-    password: *
-doors:
-    -
-        id: 'left'
-        relay: 23
-        state: 17
-        state_topic: "home-assistant/cover/left"
-        command_topic: "home-assistant/cover/left/set"
-    -
-        id: 'right'
-        relay: 24
-        state: 27
-        state_topic: "home-assistant/cover/right"
-        command_topic: "home-assistant/cover/right/set"
+country=US
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    update_config=1
+
+network={
+    ssid="Your Network Name"
+    psk="Your Network Password"
+    key_mgmt=WPA-PSK
+}
 ```
-
-### Optional configuration
-There are five optional configuration parameters.  
-Two of the option parameters are for mqtt.  One is to enable discovery by HomeAssistant. The second one changes the discovery prefix for HomeAssitant.
+7. On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
+## Configuration and Setup
+1. SSH into the Raspberry Pi (default password: raspberry):
+```$ssh pi@theipaddress```
+2. Change the default password:
+```$sudo passwd pi```
+3. Download bt_monitor
+```$git clone https://github.com/bg1000/bt_monitor.git```
+4. Change to the monitor directory and run the update and install script
+```$cd bt_monitor
+$sudo bash deploy_bt_monitor.sh
 ```
-mqtt:
-    host: m10.cloudmqtt.com
-    port: *
-    user: *
-    password: *
-    discovery: true
-    discovery_prefix: 'homeassistant'
+The install script performs the following tasks:
+- performs an update & upgrade (this may take a while on a pi-zero)
+- installs the required bluetooth tools
+- installs the mosquitto mqtt client - note: 1.6.4-0 is installed due to [this](https://github.com/andrewjfreyer/monitor/issues/254) issue. apt-mark hold is used to prevent accidental upgrades.
+- installs the required python libraries (see requirements.txt for details)
+- opens the configuration file in the nano editor.  This is a yaml file and each line you may need to change is commented.  When you are done editing the file. ``` ctrl-x, y, enter```
+- sets up bt_monitor to run as a service and to start automatically when the system is booted
+5. Once the install script is complete reboot with ```$sudo reboot```
+## Testing and Troubleshooting
+1. After startup you can verify that bt_monitor is running with ```$sudo systemctl status bt_monitor@pi```
+2. To verify that the pi can see your phone via bluetooth and that you have the name and address correct place your phone near the pi with bluetooth turned on.  Run ```$hcitool -i hci0 name "XX:XX:XX:XX:XX:XX"``` with the address of your phone.  If the hcitool can see your phone it will return your phone's name.  This name and address combination is what you need to use when requesting a scan via MQTT.  If the hcitool returns nothing it can not see your phone.
+3. bt_monitor uses the standard python logging utility.  The default setting is WARNING which will only print messages when something goes wrong.  You can change this setting by editing the config file ```$nano /home/pi/bt_monitor/config.yaml```.  Changing WARNING to INFO will show more messages and changing it to DEBUG will show the most.
+4. To activate changes to the config file there are two options: 
+- option 1: Restart the service with ```$sudo systemctl restart bt_monitor@pi```.  The messages will show up in /var/log/syslog
+- option 2: Stop the service with ```$sudo systemctl stop bt_monitor@pi```. Run the application interactively with ```$python3 /home/pi/bt_monitor/main.py```. Messages will now print to the terminal.  When you are done you can ```ctrl-c``` and restart the service with ```$sudo systemctl start bt_monitor@pi```
+5. Since all communication to and from bt_monitor is via MQTT it is helpful to monitor the appropriate MQTT topics with an MQTT client.  If you are using home assistant the MQTT tab under Developer Tools works well.  Assumming you have kept the base topics the same in config.yaml, under **Listen to Topic** enter  ```bt_monitor/#``` and click *Start Listening*. Under **Publish a Packet** enter ```bt_monitor/scan``` under the topic and add an appropriate payload which will look like the following:
 ```
-
-The discovery parameter defaults to false and should be set to true to enable discovery by HomeAssistant. If set to true, the door state_topic and command_topic parameters are not necessary and are ignored.  
-The discovery_prefix parameter defaults to 'homeassistant' and shouldn't be changed unless changed in HomeAssistant
-
-The other three of the option parameters are for the doors. One to give the door a name for discovery.  The second one to flip the state pin of the magnetic switch in the invent of a different wiring schema. The third one to filp the relay logic.  This is a per door configuration option like:
+{
+    "Adapter": "hci0",
+    "cmd": "scan",
+    "DeviceName": "My_Phone",
+    "Address": "XX:XX:XX:XX:XX:XX",
+    "ScansForAway": "2"
+}
 ```
-doors:
-    -
-        id: 'left'
-        name: 'Left Garage Door'
-        relay: 23
-        state: 17
-        state_mode: normally_closed
-        invert_relay: true
-        state_topic: "home-assistant/cover/left"
-        command_topic: "home-assistant/cover/left/set"
+Replace **"My_Phone"** and **"XX:XX:XX:XX:XX:XX"** with the values from the hcitool test above (keep the quotes).
+After clicking *Publish* You should see your message go out and then a few seconds later a response that looks something like the following:
 ```
+Message 2 received on bt_monitor/garage/My_Phone at 1:50 PM:
+{
+    "DeviceName": "My_Phone",
+    "DeviceAddress": "XX:XX:XX:XX:XX:XX",
+    "Confidence": "0.0",
+    "Timestamp": "2019-12-04 13:50:32.634536"
+}
+```
+If bt_scan sees your phone confidence will be "100.0".  If bt-scan doesn't see your phone confidence will = previous_confidence - 100.0/ScansForAway.  bt_monitor will keep scanning until a value of 100.0 or 0.0 is reached.  For example: You request a scan and get a value of 100.0. You then turn off bluetooth on your phone and request another scan with ScansForAway="2".  You will get a result of "50.0" and then a result of "0.0". Once a value of either 100.0 or 0.0 is reached no further scans will be completed until another message is sent.  If you want to scan every X minutes you can accomplish this by creating an automation that sends a request every X minutes.
 
-The name parameter defaults to the unsanitized id parameter  
-The state_mode parameter defaults to 'normally_open' and isn't necessary unless you want to change it to 'normally_closed'  
-The invert_relay parameter defaults to false and isn't necessary unless you want to set the relay pin to be powered by default
-        
-## Contributors
+Scan Order: bt_monitor uses a FIFO request queue (size=30 but can be changed in configuration file) and has 2 threads.  One thread responds to scan requests by putting them in the FIFO queue.  The second thread loops every 5 seconds (can be changed in configuration file) and processes any outstanding scan requests (empties the queue before going to sleep).  If the processing thread calculates a confidence greater than 0.0 and less than 100.0 it will enqueue another request for the scanned device in the request queue. If the queue is full a warning message is logged and the request is discarded.
 
-I wrote the code myself but as far as hardware/wiring and motivation goes I was heavily insipired by Andrew Shilliday.
-As you can tell I borrowed some images from him. If you find my guide hard to read, need a web gui, or just want a second reference definitely check out his repo: https://github.com/andrewshilliday/garage-door-controller
+6. Tip: It took me a bit of time to figure out where to place the pi's for best coverage and also what events I wanted to use to trigger scans.  To make testing easier I created an input_boolean that would request a scan for a particular phone and added it to the UI.  I then built an automation that was triggered by the input boolean, requested a scan via MQTT and reset the input_boolean.  This allows you to easily trigger a scan for testing. Other automations you build can also set this input boolean to trigger a scan rather than having multiple automations that send the same json payload. If you later decide you don't want it in the UI you can simply remove it and leave it "behind the scenes".
 
-[1]: http://imgur.com/obgvgKJ.png
+
+
+
+
+
+
