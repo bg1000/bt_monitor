@@ -30,38 +30,18 @@ network={
     key_mgmt=WPA-PSK
 }
 ```
-On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
-Configuration and Setup
-SSH into the Raspberry Pi (default password: raspberry):
-ssh pi@theipaddress
-Change the default password:
-sudo passwd pi
-Update and upgrade:
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get dist-upgrade -y
-sudo reboot
-Install Bluetooth Firmware, if necessary:
-#install Bluetooth drivers for Pi Zero W
-sudo apt-get install pi-bluetooth
-Reboot:
-sudo reboot
-Install Mosquitto 1.5+ (important step!):
-# get repo key
-wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
-
-#add repo
-sudo apt-key add mosquitto-repo.gpg.key
-
-#download appropriate lists file 
-cd /etc/apt/sources.list.d/
-sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
-
-#update caches and install 
-apt-cache search mosquitto
-sudo apt-get update
-sudo apt-get install -f libmosquitto-dev mosquitto mosquitto-clients libmosquitto1
-
+7. On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
+## Configuration and Setup
+1. SSH into the Raspberry Pi (default password: raspberry):
+```ssh pi@theipaddress```
+2. Change the default password:
+``` sudo passwd pi```
+3. Download bt_monitor
+```git clone https://github.com/bg1000/bt_monitor.git```
+4. Change to the monitor directory and run the update and install script
+```cd bt_monitor
+sudo bash deploy bt_monitor
+```
 
 
 
