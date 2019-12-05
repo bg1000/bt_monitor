@@ -55,6 +55,7 @@ The install script performs the following tasks:
 - installs the required python libraries (see requirements.txt for details)
 - sets up bt_monitor to run as a service and to start automatically when the system is booted
 5.Edit the configuration file with ```$nano config.yaml``` The lines that you may want to change are commented.
+
 6. Once you are finished editing the config file save it and reboot with ```$sudo reboot```
 ## Testing and Troubleshooting
 1. After startup you can verify that bt_monitor is running with ```$sudo systemctl status bt_monitor@pi```
