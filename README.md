@@ -42,7 +42,8 @@ network={
 4. Download bt_monitor
 ```$git clone https://github.com/bg1000/bt_monitor.git```
 5. Change to the monitor directory and run the update and install script
-```$cd bt_monitor
+``` 
+$cd bt_monitor
 $sudo bash 2>&1 deploy_bt_monitor.sh | tee /home/pi/bt_monitor/installation.log
 ```
 *Note: This will show the output of the script on the terminal and store it in a file allowing you to do other things while it's running.  Be sure to check the log file for sucessful completion before proceeding.*
