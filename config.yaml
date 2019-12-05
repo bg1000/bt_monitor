@@ -1,0 +1,15 @@
+mqtt:
+  host: XXX.XXX.X.XXX # put your MQTT broker hostname or ip address
+  port: 1883 # MQTT port - 1883 is the default
+  user: "" # MQTT username
+  password: "" # MQTT password
+  base_topic: bt_monitor # all MQTT topics for this app will start with this - recommend not changing
+  publisher_id: garage # this is the topic this pi will publish under - recommend name of the room in your house
+  command_topic: cmd # the name of the topic bt_monitor will receive commands - recommend not changing
+  status_topic: status # the name of the topic bt_monitor will report status - recommend not changing
+  discovery: false # not currently implemented
+  discovery_prefix: homeassistant # not currerntly implemented
+general:
+  MaxQueueSize: 30 # this is the size of the request queue (hint: 30 is a lot of unprocessed requests)
+  LoopTimer: 5 # this is the number of seconds the main thread sleeps in between checking for new requests
+  LoggingLevel: WARNING # uses the standard python logging module (hint: change to INFO for more messages or DEBUG for the most messages)
