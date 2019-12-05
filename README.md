@@ -37,9 +37,11 @@ network={
 ```$ssh pi@theipaddress```
 2. Change the default password:
 ```$sudo passwd pi```
-3. Download bt_monitor
+3. install git
+```sudo apt-get install git -y```
+4. Download bt_monitor
 ```$git clone https://github.com/bg1000/bt_monitor.git```
-4. Change to the monitor directory and run the update and install script
+5. Change to the monitor directory and run the update and install script
 ```$cd bt_monitor
 $sudo bash 2>&1 deploy_bt_monitor.sh | tee /home/pi/bt_monitor/installation.log
 ```
