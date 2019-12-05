@@ -53,7 +53,8 @@ The install script performs the following tasks:
 - installs the required bluetooth tools
 - installs the mosquitto mqtt client - *Note: 1.6.4-0 is installed due to [this](https://github.com/andrewjfreyer/monitor/issues/254) issue. apt-mark hold is used to prevent accidental upgrades.*
 - installs the required python libraries (see requirements.txt for details)
-- sets up bt_monitor to run as a service and to start automatically when the system is booted
+- sets up bt_monitor to run as a service and to start automatically when the system is booted.
+
 6.Edit the configuration file with ```$nano config.yaml``` The lines that you may want to change are commented.
 7. Once you are finished editing the config file save it and reboot with ```$sudo reboot```
 ## Testing and Troubleshooting
