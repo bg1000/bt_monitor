@@ -54,9 +54,8 @@ The install script performs the following tasks:
 - installs the mosquitto mqtt client - *Note: 1.6.4-0 is installed due to [this](https://github.com/andrewjfreyer/monitor/issues/254) issue. apt-mark hold is used to prevent accidental upgrades.*
 - installs the required python libraries (see requirements.txt for details)
 - sets up bt_monitor to run as a service and to start automatically when the system is booted
-5.Edit the configuration file with ```$nano config.yaml``` The lines that you may want to change are commented.
-
-6. Once you are finished editing the config file save it and reboot with ```$sudo reboot```
+6.Edit the configuration file with ```$nano config.yaml``` The lines that you may want to change are commented.
+7. Once you are finished editing the config file save it and reboot with ```$sudo reboot```
 ## Testing and Troubleshooting
 1. After startup you can verify that bt_monitor is running with ```$sudo systemctl status bt_monitor@pi```
 2. To verify that the pi can see your phone via bluetooth and that you have the name and address correct place your phone near the pi with bluetooth turned on.  Run ```$hcitool -i hci0 name "XX:XX:XX:XX:XX:XX"``` with the address of your phone.  If the hcitool can see your phone it will return your phone's name.  This name and address combination is what you need to use when requesting a scan via MQTT.  If the hcitool returns nothing it can not see your phone.
