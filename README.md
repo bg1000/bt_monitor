@@ -31,7 +31,7 @@ network={
     key_mgmt=WPA-PSK
 }
 ```
-7. On the first startup, insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
+7. Insert SD card and power on Raspberry Pi Zero W. On first boot, the newly-created wpa_supplicant.conf file and ssh will be moved to appropriate directories. Find the IP address of the Pi via your router.
 ## Configuration and Setup
 1. SSH into the Raspberry Pi (default password: raspberry):
 ```$ssh pi@theipaddress```
