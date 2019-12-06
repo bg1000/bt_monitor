@@ -51,7 +51,7 @@ $sudo bash 2>&1 deploy_bt_monitor.sh | tee /home/pi/bt_monitor/installation.log
 The install script performs the following tasks:
 - performs an update & upgrade (this may take a while on a pi-zero)
 - installs the required bluetooth tools
-- installs the mosquitto mqtt client - *Note: 1.6.4-0 is installed due to [this](https://github.com/andrewjfreyer/monitor/issues/254) issue. apt-mark hold is used to prevent accidental upgrades.*
+- installs the mosquitto mqtt client 
 - installs the required python libraries (see requirements.txt for details)
 - sets up bt_monitor to run as a service and to start automatically when the system is booted.
 
