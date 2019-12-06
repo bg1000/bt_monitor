@@ -16,7 +16,7 @@ apt-cache search mosquitto
 sudo apt-get update
 sudo apt-get install -f libmosquitto-dev mosquitto mosquitto-clients libmosquitto1 -y
 # echo holding mosquitto version at 1.5.7-1
-sudo apt-mark hold libmosquitto-dev mosquitto mosquitto-clients libmosqu
+# sudo apt-mark hold libmosquitto-dev mosquitto mosquitto-clients libmosqu
 echo installing pip for python 3
 apt-get install python3-pip -y
 echo installing required python packages
