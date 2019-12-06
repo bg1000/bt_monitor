@@ -19,3 +19,5 @@ secrets.yaml
 known_devices.yaml
 secret_config.yaml
 deploy.sh
+*.key
+*.log

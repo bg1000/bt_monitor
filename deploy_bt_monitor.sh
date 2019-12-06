@@ -19,6 +19,5 @@ echo holding mosquitto version at 1.6.4-0
 sudo apt-mark hold libmosquitto-dev mosquitto mosquitto-clients libmosqu
 echo installing required python packages
 pip3 install -r requirements.txt
-nano config.yaml
 echo setting up bt_monitor to run as a service
 sudo bash /home/pi/bt_monitor/autostart_systemd.sh 
