@@ -22,7 +22,7 @@ apt-get install python3-pip -y
 echo installing required python packages
 pip3 install -r /home/pi/bt_monitor/requirements.txt
 echo setting up bt_monitor to run as a service
-cp bt_monitor@pi.service /etc/systemd/system/bt_monitor@pi.service
+cp /home/pi/bt_monitor/bt_monitor@pi.service /etc/systemd/system/bt_monitor@pi.service
 systemctl --system daemon-reload
-systemctl enable bt_monitor@${SUDO_USER:-${USER}}.service
+systemctl enable bt_monitor@pi.service
 
