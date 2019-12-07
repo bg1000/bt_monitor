@@ -26,7 +26,7 @@ class bt_scan(object):
             results = {
                     "DeviceName": self.name,
                     "DeviceAddress": self.address,
-                    "confidence": "100",
+                    "Confidence": "100",
                     "Timestamp": str(datetime.datetime.now())
                       }
             self.results = json.dumps(results, indent=4)
@@ -40,7 +40,7 @@ class bt_scan(object):
             results = {
                     "DeviceName": self.name,
                     "DeviceAddress": self.address,
-                    "confidence": str(self.PreviousConfidence),
+                    "Confidence": str(self.PreviousConfidence),
                     "Timestamp": str(datetime.datetime.now())
                       }
             self.results = json.dumps(results, indent=4)
