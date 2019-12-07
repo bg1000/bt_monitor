@@ -55,7 +55,7 @@ The install script performs the following tasks:
 - installs the required python libraries (see requirements.txt for details)
 - sets up bt_monitor to run as a service and to start automatically when the system is booted.
 
-6. Edit the configuration file with ```$nano config.yaml``` The lines that you may want to change are commented.
+6. Edit the configuration file with ```$nano config.yaml``` At a minimum change the host IP and publisher_id to an appropriate value. Each line of the file is commemted so it suggested you read through this and change whatever is appropriate for your situation.
 
 7. Once you are finished editing the config file save it and reboot with ```$sudo reboot```
 ## Testing and Troubleshooting
